@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -104,6 +105,17 @@ public class MainActivity extends AppCompatActivity {
         // 打印xml
         Logger.xml(xml);  // 会对xml字符串合法性进行校验
 
+        // 一次性打印超过4k的日志（android自带的Log会截断超过4k的部分）
+        // NOTE: 但是Logger会在原来android自带的Log截断的位置换行然后再接着打印，这导致格式上不太友好。
+        StringBuffer sb = new StringBuffer();
+        for (int i=1; i<=5*1024; ++i){
+            if (i%1024==0){
+                sb.append('\n');
+            }
+            sb.append(i/1024);
+        }
+        Logger.d(sb.toString());
+        Log.i("AndroidLog", sb.toString());// 作为对比android自带的log只能打印4k（实际略小于4k）。
 
     }
 }
