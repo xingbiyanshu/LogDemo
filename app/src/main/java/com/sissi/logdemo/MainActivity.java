@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.elvishew.xlog.LogLevel;
+import com.elvishew.xlog.XLog;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -106,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         Logger.xml(xml);  // 会对xml字符串合法性进行校验
 
         // 一次性打印超过4k的日志（android自带的Log会截断超过4k的部分）
-        // NOTE: 但是Logger会在原来android自带的Log截断的位置换行然后再接着打印，这导致格式上不太友好。
+        // NOTE: 但是Logger会在原来android自带的Log截断的位置换行然后再接着打印，这破坏了日志内容的完整性（无法分辨此处确实有个换行还是被Logger换行了）。
         StringBuffer sb = new StringBuffer();
         for (int i=1; i<=5*1024; ++i){
             if (i%1024==0){
@@ -117,5 +119,22 @@ public class MainActivity extends AppCompatActivity {
         Logger.d(sb.toString());
         Log.i("AndroidLog", sb.toString());// 作为对比android自带的log只能打印4k（实际略小于4k）。
 
+
+        /*使用com.elvishew.xlog.XLog*/
+        XLog.init(BuildConfig.DEBUG ? LogLevel.ALL : LogLevel.NONE);
+
+        XLog.d("Simple message");
+        XLog.d(Sets.newHashSet(1, 2, 3, 4));
+        XLog.d(ImmutableMap.of(1, "a", 2, "b"));
+        XLog.d(Lists.newArrayList("a", "b", "c"));
+        XLog.json(json);
+        XLog.xml(xml);
+        XLog.d(sb.toString());
+
+        // 局部用法
+        com.elvishew.xlog.Logger partial = XLog.tag("partial").build();
+        partial.d("partial msg");
+        partial.d("partial msg 2");
     }
+
 }

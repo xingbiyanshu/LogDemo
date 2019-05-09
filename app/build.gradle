@@ -28,5 +28,7 @@ dependencies {
 
     implementation 'com.google.guava:guava:27.1-android'
 
-    implementation 'com.orhanobut:logger:2.2.0'
+    implementation 'com.orhanobut:logger:2.2.0'  // 引入了对support-annotations的依赖
+
+    implementation 'com.elvishew:xlog:1.6.1' // 没有引入依赖
 }
