@@ -37,11 +37,13 @@ public class MainActivity extends AppCompatActivity {
             "<android.support.constraint.ConstraintLayout>" +
             "</android.support.constraint.ConstraintLayout>";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        System.out.println("############xxxx");
         /*
          * 使用com.orhanobut.logger.Logger
          */
